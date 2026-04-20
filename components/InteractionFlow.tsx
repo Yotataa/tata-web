@@ -44,8 +44,10 @@ const BackgroundHearts = () => {
 };
 
 // --- Step 1: Love Mode ---
+import { useRef } from "react";
 const LoveModeStep = ({ onComplete }: { onComplete: () => void }) => {
     const [isOn, setIsOn] = useState(false);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
         if (isOn) {
@@ -80,7 +82,17 @@ const LoveModeStep = ({ onComplete }: { onComplete: () => void }) => {
                     </span>
 
                     <button
-                        onClick={() => setIsOn(!isOn)}
+                        onClick={() => {
+  setIsOn(!isOn);
+
+  if (!audioRef.current) {
+    audioRef.current = new Audio('/pretty.mp3');
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.5;
+  }
+
+  audioRef.current.play();
+}}
                         className={`group relative w-32 h-16 rounded-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] p-1.5 focus:outline-none ${isOn ? 'bg-red-500 shadow-[0_0_30px_rgba(239,68,68,0.5)]' : 'bg-white/10'
                             }`}
                     >
