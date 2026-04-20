@@ -82,20 +82,24 @@ const LoveModeStep = ({ onComplete }: { onComplete: () => void }) => {
                     </span>
 
                     <button
-                        onClick={() => {
+  onClick={() => {
   setIsOn(!isOn);
 
   if (!audioRef.current) {
-    audioRef.current = new Audio('/pretty.mp3');
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.5;
+    const audio = new Audio('/pretty.mp3');
+    audio.loop = true;
+    audio.volume = 0.5;
+    audioRef.current = audio;
   }
 
-  audioRef.current.play();
+  if (audioRef.current.paused) {
+    audioRef.current.play();
+  } else {
+    audioRef.current.pause();
+  }
 }}
-                        className={`group relative w-32 h-16 rounded-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] p-1.5 focus:outline-none ${isOn ? 'bg-red-500 shadow-[0_0_30px_rgba(239,68,68,0.5)]' : 'bg-white/10'
-                            }`}
-                    >
+  className="group relative w-32 h-16 rounded-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
+>
                         <motion.div
                             animate={{ x: isOn ? 64 : 0 }}
                             transition={{ type: "spring", stiffness: 400, damping: 30 }}
